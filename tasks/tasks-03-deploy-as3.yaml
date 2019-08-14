@@ -7,7 +7,7 @@
 # Set Var for curent AS3 file name
   - name: RETRIEVE AS3 VERSION FROM FILE
     find:
-      paths: ./files
+      paths: ../files
       patterns: "f5-appsvcs*.rpm"
     register: as3rpm
     delegate_to: localhost
@@ -15,7 +15,7 @@
 
   - name: INSTALL AS3
     bigip_iapplx_package:
-      provider: "{{ hostvars[inventory_hostname]['provider']  }}"
+      provider: "{{ provider }}"
       package: "{{ as3rpm.files[0].path }}"
     delegate_to: localhost
 
