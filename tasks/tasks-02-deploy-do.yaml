@@ -15,23 +15,32 @@
 
   - name: Install DO
     bigip_iapplx_package:
-      provider: "{{ hostvars[inventory_hostname]['provider']  }}"
-      server: localhost
-      user: admin
-      password: "{{ vault_password }}"
-      validate_certs: no
-      server_port: 443
+      provider: "{{ provider }}"
       package: "{{ dorpm.files[0].path }}"
     delegate_to: localhost
 
 
+  - name: WAIT FOR DO API READY
+    uri:
+      url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/declarative-onboarding"
+      method: GET
+      user: admin
+      password: "{{ provider.password }}"
+      status_code: 401 
+      validate_certs: no
+    retries: 30
+    delay: 5
+    register: do_result
+    until: ('status' in do_result) and (do_result.status == 401)
+    changed_when: false
+
   - name: Push DO
     uri:
-      url: "https://{{ hostvars[inventory_hostname]['provider']['server'] }}:{{ hostvars[inventory_hostname]['provider']['server_port'] }}/mgmt/shared/declarative-onboarding"
+      url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/declarative-onboarding"
       method: POST
       user: admin
-      password: "{{ hostvars[inventory_hostname]['provider']['password'] }}"
-      body: "{{ lookup('file','host_vars/' + inventory_hostname + '/do.json') }}"
+      password: "{{ provider.password }}"
+      body: "{{ lookup('template', '../declarations/do.j2', split_lines=False) }}"
       status_code: 202
       timeout: 300
       body_format: json

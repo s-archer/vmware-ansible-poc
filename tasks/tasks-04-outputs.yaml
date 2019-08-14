@@ -1,0 +1,18 @@
+---
+#------------------------------------------------------------------------------
+# Start tasks
+#------------------------------------------------------------------------------
+
+  - name: OUTPUT HTTPS LINK
+    debug:
+      msg: "You should now be able to login to the BIG-IP on https://{{ net_mgmt.ip }}"
+    
+  - name: OUTPUT HTTPS LINK
+    debug:
+      msg: "You should now be able to login to the APPLICATION on {{ vs_ip }}"
+    
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...

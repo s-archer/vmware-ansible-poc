@@ -37,7 +37,9 @@
   tasks:
 
   - include_tasks: ../tasks/tasks-01-deploy-vmware-vm.yaml
-
+  - include_tasks: ../tasks/tasks-02-deploy-do.yaml
+  - include_tasks: ../tasks/tasks-03-deploy-as3.yaml
+  - include_tasks: ../tasks/tasks-04-outputs.yaml
 
 #------------------------------------------------------------------------------
 # End tasks

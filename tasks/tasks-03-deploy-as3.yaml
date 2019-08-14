@@ -19,18 +19,31 @@
       package: "{{ as3rpm.files[0].path }}"
     delegate_to: localhost
 
-  - pause:
-      seconds: 5
+
+- name: WAIT FOR AS3 API (204)
+  uri:
+    url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/appsvcs/declare"
+    method: GET
+    user: admin
+    password: "{{ provider.password }}"
+    force_basic_auth: yes
+    status_code: 204 
+    validate_certs: no
+  retries: 30
+  delay: 5
+  register: as3_result
+  until: ('status' in as3_result) and (as3_result.status == 204)
+  changed_when: false
 
 
 - name: AS3 REST CALL TO BIG-IP USING JINJA2 TEMPLATE
   uri:
-    url: "https://{{ my_stack.ansible_facts.cloudformation[stack_name].stack_outputs.Bigip1ManagementEipAddress }}/mgmt/shared/appsvcs/declare"
+    url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/appsvcs/declare"
     method: POST
     force_basic_auth: yes
-    user: "{{ bigip_user }}"
-    password: "{{ bigip_pass }}"
-    body: "{{ lookup('template', './declarations/as3-declaration.j2', split_lines=False) }}"
+    user: admin
+    password: "{{ provider.password }}"
+    body: "{{ lookup('template', '../declarations/as3-declaration.j2', split_lines=False) }}"
     body_format: json
     status_code: 200
     timeout: 120

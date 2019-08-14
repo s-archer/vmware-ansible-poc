@@ -14,15 +14,15 @@
   register: vm_facts
 
 
-- name: DEBUG WITH ITEMS
+- name: OUTPUT DISCOVERED UUID
   debug:
-    msg: "{{ item.uuid }}"
+    msg: "Discovered UUID: {{ item.uuid }}"
   loop: "{{ vm_facts.virtual_machines | json_query(my_query)}}"
   vars:
-    my_query: "[?guest_name=='{{ vm_01_hostname }}']"
+    my_query: "[?guest_name=='{{ inventory_hostname }}']"
 
 
-- name: Remove a virtual machine by uuid
+- name: REMOVE VM USING DISCOVERED UUID
   vmware_guest:
     hostname: '{{ vcenter_hostname }}'
     username: '{{ vcenter_user }}'
@@ -38,9 +38,7 @@
   with_items:
     - "{{ vm_facts.virtual_machines | json_query(my_query) }}"
   vars:
-    my_query: "[?guest_name=='{{ vm_01_hostname }}']"
-
-
+    my_query: "[?guest_name=='{{ inventory_hostname }}']"
 
 
 #------------------------------------------------------------------------------

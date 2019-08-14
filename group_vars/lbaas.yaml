@@ -5,6 +5,8 @@ provider:
   validate_certs: no
   server_port: 443
 
+vs_ip: "10.103.12.100"
+
 vm_dns: "172.30.104.10"
 vm_ntp: "172.30.104.10"
 
