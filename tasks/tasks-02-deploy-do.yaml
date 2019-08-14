@@ -5,7 +5,7 @@
 
 
 # Set Var for curent DO file name
-  - name: Retrieve DO Install Version
+  - name: RETRIEVE DO VERSION FROM FILE
     find:
       paths: ../files
       patterns: "f5-decl*.rpm"
@@ -13,7 +13,7 @@
     delegate_to: localhost
 
 
-  - name: Install DO
+  - name: INSTALL DO
     bigip_iapplx_package:
       provider: "{{ provider }}"
       package: "{{ dorpm.files[0].path }}"
@@ -34,7 +34,7 @@
     until: ('status' in do_result) and (do_result.status == 401)
     changed_when: false
 
-  - name: Push DO
+  - name: DEPLOY DO DECLARATION
     uri:
       url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/declarative-onboarding"
       method: POST

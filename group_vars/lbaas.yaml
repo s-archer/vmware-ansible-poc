@@ -1,5 +1,5 @@
 provider:
-  server: localhost
+  server: "{{ net_mgmt.ip }}"
   user: admin
   password: "{{ vm_admin_pass }}"
   validate_certs: no
