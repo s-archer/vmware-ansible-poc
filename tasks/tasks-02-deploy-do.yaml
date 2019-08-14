@@ -22,17 +22,18 @@
 
   - name: WAIT FOR DO API READY
     uri:
-      url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/declarative-onboarding"
+      url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/declarative-onboarding/info"
       method: GET
       user: admin
       password: "{{ provider.password }}"
-      status_code: 200 
+      status_code: 200
       validate_certs: no
     retries: 30
     delay: 5
     register: do_result
     until: ('status' in do_result) and (do_result.status == 200)
     changed_when: false
+
 
   - name: DEPLOY DO DECLARATION
     uri:
@@ -46,8 +47,30 @@
       body_format: json
       validate_certs: no
     delegate_to: localhost
+    register: do_deploy
 
-#------------------------------------------------------------------------------
+
+  - name: DEBUG DO DEPLOY STATUS
+    debug:
+      msg: "{{ do_deploy.json.selfLink }}"
+
+
+  - name: DEPLOY DO DECLARATION STATUS
+    uri:
+      url: "{{ do_deploy.json.selfLink | replace ('localhost',net_mgmt.ip) }}"
+      method: GET
+      user: admin
+      password: "{{ provider.password }}"
+      status_code: 200
+      validate_certs: no
+    retries: 30
+    delay: 5
+    delegate_to: localhost
+    register: do_deploy_status
+    until: (do_deploy_status.status == 'FINISHED')
+
+
+#-----------------------------------------------------------------------------STATUS-
 # End tasks
 #------------------------------------------------------------------------------
 ...
