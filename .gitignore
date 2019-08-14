@@ -1,0 +1,19 @@
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+
+# Ansible retry files
+*.retry
+
+# Large Image Files
+*.ova
+
+# Credentials files
+
+*creds*
