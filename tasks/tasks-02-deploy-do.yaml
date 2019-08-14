@@ -26,12 +26,12 @@
       method: GET
       user: admin
       password: "{{ provider.password }}"
-      status_code: 401 
+      status_code: 200 
       validate_certs: no
     retries: 30
     delay: 5
     register: do_result
-    until: ('status' in do_result) and (do_result.status == 401)
+    until: ('status' in do_result) and (do_result.status == 200)
     changed_when: false
 
   - name: DEPLOY DO DECLARATION
