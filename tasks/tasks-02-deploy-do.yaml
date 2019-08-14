@@ -55,7 +55,7 @@
       msg: "{{ do_deploy.json.selfLink }}"
 
 
-  - name: DEPLOY DO DECLARATION STATUS
+  - name: DEPLOY DO DECLARATION STATUS (MAX 600)
     uri:
       url: "{{ do_deploy.json.selfLink | replace ('localhost',net_mgmt.ip) }}"
       method: GET
@@ -63,8 +63,8 @@
       password: "{{ provider.password }}"
       status_code: 200
       validate_certs: no
-    retries: 30
-    delay: 5
+    retries: 60
+    delay: 10
     delegate_to: localhost
     register: do_deploy_status
     until: (do_deploy_status.status == 'FINISHED')
