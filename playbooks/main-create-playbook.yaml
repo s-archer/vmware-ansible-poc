@@ -5,7 +5,7 @@
 #   Requires pyvmomi python library
 #------------------------------------------------------------------------------
 
-- name: DEPLOY BIG-IP TO VMWARE
+- name: DEPLOY BIG-IPS TO VMWARE
   hosts: lbaas
   connection: local
   gather_facts: no

@@ -13,3 +13,9 @@ You will need to create a credentials file (or files) containing the following v
     
     vm_admin_pass: "<username>"
     vm_root_pass: "<password>"
+
+
+Overwrite local copy of repo:
+
+git fetch --all
+git reset --hard origin/master
