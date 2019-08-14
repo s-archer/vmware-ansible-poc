@@ -67,7 +67,7 @@
     delay: 10
     delegate_to: localhost
     register: do_deploy_status
-    until: (do_deploy_status.status == 'FINISHED')
+    until: (do_deploy_status.json.result.status == 'OK')
 
 
 #------------------------------------------------------------------------------
