@@ -37,16 +37,6 @@
             "password": "{{ vm_admin_pass }}",
             "shell": "bash"
         },
-        "anotherUser": {
-            "class": "User",
-            "userType": "regular",
-            "password": "AnotherUser12345$",
-            "partitionAccess": {
-                "Common": {
-                    "role": "guest"
-                }
-            }
-        },
         "internal": {
             "class": "VLAN",
             "tag": 1001,

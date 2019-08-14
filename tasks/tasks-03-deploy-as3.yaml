@@ -14,7 +14,7 @@
 
 
   - name: INSTALL AS3
-    bigip_iapplx_package:
+    bigip_lx_package:
       provider: "{{ provider }}"
       package: "{{ as3rpm.files[0].path }}"
     delegate_to: localhost
