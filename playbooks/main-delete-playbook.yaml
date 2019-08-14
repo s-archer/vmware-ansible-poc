@@ -34,7 +34,7 @@
 
   tasks:
 
-  - include_tasks: ./tasks/tasks-11-delete-vmware-vm.yaml
+  - include_tasks: ../tasks/tasks-11-delete-vmware-vm.yaml
 
 
 #------------------------------------------------------------------------------
