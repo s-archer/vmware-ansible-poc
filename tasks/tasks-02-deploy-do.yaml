@@ -46,6 +46,7 @@
       timeout: 300
       body_format: json
       validate_certs: no
+      return_content: yes
     delegate_to: localhost
     register: do_deploy
 
@@ -63,12 +64,12 @@
       password: "{{ provider.password }}"
       status_code: 200
       validate_certs: no
+      return_content: yes
     retries: 60
     delay: 10
     delegate_to: localhost
-    register: do_deploy_status
-    until: ("OK" in do_deploy_status.json.result.status)
-
+    register: result
+    until: ('status' in result) and (result.status == 200)
 
 #------------------------------------------------------------------------------
 # End tasks
