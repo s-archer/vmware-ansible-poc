@@ -1,0 +1,59 @@
+---
+#------------------------------------------------------------------------------
+# Playbook to CREATE VMWare demo environment. 
+#
+#   Requires pyvmomi python librarypy
+#------------------------------------------------------------------------------
+
+- name: PREP VMWARE OVA FILE - ONE TIME TASK
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+
+#------------------------------------------------------------------------------
+# Load Variables from files 
+#------------------------------------------------------------------------------
+  
+  # You need to create a file named aws_creds.yaml (update path below) with the 
+  # following variables:
+  #
+  #  ec2_access_key: "--your-key-here--"
+  #  ec2_secret_key: "--your-secret-here--"
+  #
+  vars_files:
+
+    - ../../creds/vmware_creds.yaml
+    - ./vars/vars.yaml
+    - ./vars/f5cs_gslb_vars.yaml
+    - ./vars/vmware_vars.yaml
+   
+   # Temp for Shareef
+   # - ../vars/vmware_creds.yaml
+   # - ../vars/vars.yaml
+   # - ../vars/f5cs_gslb_vars.yaml
+   # - ../vars/vmware_vars.yaml
+
+#------------------------------------------------------------------------------
+# End variables
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Start tasks
+#------------------------------------------------------------------------------
+  
+  tasks:
+
+
+  #- name: POPULATE TEMPLATE FOR COT 
+  #  template: src=templates/deploy_ova.bash.j2 dest=/tmp/deploy_ova.bash
+
+  - name: ADD CUSTOM GUEST PROPERTIES TO VMWARE OVA FILE
+    #command: bash cot edit-properties {{ source_ova }} -p net.mgmt.addr=""+string -p net.mgmt.gw=""+string -p user.root.pwd=""+string -p user.admin.pwd=""+string -u -o {{ destination_ova }}
+    command: "{{ lookup('template', './templates/cot-template.bash.j2', split_lines=False) }}"
+    #command: "{{ lookup('template', './templates/cot-template.bash.j2') }}"
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...

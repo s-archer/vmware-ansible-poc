@@ -1,0 +1,17 @@
+net_mgmt:
+  name: "mgmt"
+  vlan: "itc_pme"
+  ip: "172.30.107.121"
+  gw: "172.30.107.254"
+net_internal:  
+  name: "internal"
+  vlan: "poc-vlan-3010"
+  ip: "10.103.10.12"
+net_external:  
+  name: "external"
+  vlan: "poc-vlan-3012"
+  ip: "10.103.12.12"
+net_ha:  
+  name: "ha"
+  vlan: "poc-vlan-3017"
+  ip: "10.103.17.12"

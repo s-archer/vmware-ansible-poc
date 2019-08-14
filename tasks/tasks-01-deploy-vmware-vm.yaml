@@ -1,0 +1,85 @@
+---
+#------------------------------------------------------------------------------
+# Start tasks
+#------------------------------------------------------------------------------
+
+
+# The ansible host must be able to resolve names of all potential destination
+# ESX servers and the vcentre server.  This is because the OVA file may be
+# uploaded to an ESX server directly.
+
+
+- name: DEPLOY VMWARE OVF
+  vmware_deploy_ovf:
+    allow_duplicates: no
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_user }}'
+    password: '{{ vcenter_pass }}'
+    datacenter: '{{ vcenter_dc }}'
+    cluster: '{{ vcenter_cluster }}'
+    datastore: '{{ vcenter_datastore }}'
+    name: '{{ inventory_hostname }}'
+    networks: "{u'Management':u'{{ net_mgmt.vlan }}',u'Internal':u'{{ net_internal.vlan }}',u'External':u'{{ net_external.vlan }}',u'HA':u'{{ net_ha.vlan }}',}"
+    properties:
+      net.mgmt.addr: "{{ net_mgmt.ip }}/24"
+      net.mgmt.gw: "{{ net_mgmt.gw }}"
+      user.admin.pwd: "{{ vm_admin_pass }}"      
+      user.root.pwd: "{{ vm_root_pass }}"
+    validate_certs: no
+    ova: '{{ vcenter_ova }}'
+    wait_for_ip_address: true
+  delegate_to: localhost
+  register: deploy_ova
+
+
+- name:  DEBUG OVF RESULT
+  debug:
+    msg:  "{{ deploy_ova }}"
+
+
+- name: GATHER VM FACTS - AFTER
+  vmware_vm_facts:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_user }}'
+    password: '{{ vcenter_pass }}'
+    vm_type: vm
+    validate_certs: no
+  delegate_to: localhost
+  register: vm_facts
+
+
+- name: DEBUG GATHER VM FACTS - AFTER
+  debug:
+    msg: "{{ item.vm_network }}"
+  loop: "{{ vm_facts.virtual_machines | json_query(my_query)}}"
+  vars:
+    my_query: "[?guest_name=='{{ inventory_hostname }}']"
+
+
+- name: WAIT FOR SSH ACCESS - CHECK EVERY 10 (MAX 600)
+  wait_for:
+    host: "{{ net_mgmt.ip }}"
+    port: 22
+    delay: 0
+    sleep: 10
+    connect_timeout: 5
+    timeout: 600
+    msg: "Failed to detect SSH port open"
+
+
+- name: CHECK FOR READY STATUS - CHECK EVERY 10 (MAX 600)
+  bigip_wait:
+    provider:
+      server: "{{ net_mgmt.ip }}"
+      validate_certs: no
+      user: "root"
+      password: "{{ vm_root_pass }}"
+    sleep: 10
+    timeout: 600
+
+
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...

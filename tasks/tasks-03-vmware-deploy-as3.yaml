@@ -1,0 +1,46 @@
+---
+#------------------------------------------------------------------------------
+# Start tasks
+#------------------------------------------------------------------------------
+
+
+# Set Var for curent AS3 file name
+  - name: Retrieve AS3 Install Version
+    find:
+      paths: ./files
+      patterns: "f5-appsvcs*.rpm"
+    register: as3rpm
+    delegate_to: localhost
+
+
+  - name: Install AS3
+    bigip_iapplx_package:
+      provider: "{{ hostvars[inventory_hostname]['provider']  }}"
+      package: "{{ as3rpm.files[0].path }}"
+    delegate_to: localhost
+
+  - pause:
+      seconds: 5
+
+
+- name: AS3 REST CALL TO BIG-IP USING JINJA2 TEMPLATE
+  uri:
+    url: "https://{{ my_stack.ansible_facts.cloudformation[stack_name].stack_outputs.Bigip1ManagementEipAddress }}/mgmt/shared/appsvcs/declare"
+    method: POST
+    force_basic_auth: yes
+    user: "{{ bigip_user }}"
+    password: "{{ bigip_pass }}"
+    body: "{{ lookup('template', './declarations/as3-declaration.j2', split_lines=False) }}"
+    body_format: json
+    status_code: 200
+    timeout: 120
+    validate_certs: no
+  register: deploy_as3
+  until: deploy_as3 is not failed
+  retries: 5
+  delay: 30
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...

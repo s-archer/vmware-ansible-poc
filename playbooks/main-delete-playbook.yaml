@@ -1,0 +1,62 @@
+---
+#------------------------------------------------------------------------------
+# Ansible Playbook to Delete Demo Environment
+#------------------------------------------------------------------------------
+
+- name: DELETE VPC SUBNETS & F5 INSTANCES
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ ec2_access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ ec2_secret_key }}"
+    AWS_REGION: "{{ aws_region.region }}"
+
+#------------------------------------------------------------------------------
+# Load Variables from files 
+#------------------------------------------------------------------------------
+  
+  # You need to create a file named aws_creds.yaml (update path below) with the following variables:
+  #
+  #  ec2_access_key: "--your-key-here--"
+  #  ec2_secret_key: "--your-secret-here--"
+  #
+  vars_files:
+  #  - ../../creds/aws_creds.yaml
+  #  - ./vars/vars.yaml
+
+    # Temp for Shareef
+    - ../vars/vmware_creds.yaml
+    - ../vars/vars.yaml
+    - ../vars/f5cs_gslb_vars.yaml
+    - ../vars/vmware_vars.yaml
+  
+#------------------------------------------------------------------------------
+# End variables
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Start Tasks
+#------------------------------------------------------------------------------
+
+  tasks:
+
+  - include_tasks: ./tasks/tasks-11-aws-delete-cft.yaml
+    loop:
+      - region: eu-west-2
+        peer_vpc_id: vpc-06a10bf18cde85e4e
+        peer_route_table_id: rtb-06afd44887018d13a
+        peer_igw_id: igw-0b6dfbf4b48a736fa
+      - region: us-east-1
+        peer_vpc_id: vpc-0fd7fb73de0548dea
+        peer_route_table_id: rtb-03b34da7b13f617fe
+        peer_igw_id: igw-0ab2ef472ae2e279a
+    loop_control:
+      loop_var: aws_region
+
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...

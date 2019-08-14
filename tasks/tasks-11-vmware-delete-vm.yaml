@@ -1,0 +1,49 @@
+---
+#------------------------------------------------------------------------------
+# Start Tasks
+#------------------------------------------------------------------------------
+
+- name: GATHER VM FACTS
+  vmware_vm_facts:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_user }}'
+    password: '{{ vcenter_pass }}'
+    vm_type: vm
+    validate_certs: no
+  delegate_to: localhost
+  register: vm_facts
+
+
+- name: DEBUG WITH ITEMS
+  debug:
+    msg: "{{ item.uuid }}"
+  loop: "{{ vm_facts.virtual_machines | json_query(my_query)}}"
+  vars:
+    my_query: "[?guest_name=='{{ vm_01_hostname }}']"
+
+
+- name: Remove a virtual machine by uuid
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_user }}'
+    password: '{{ vcenter_pass }}'
+    datacenter: '{{ vcenter_dc }}'
+    cluster: '{{ vcenter_cluster }}'
+    datastore: '{{ vcenter_datastore }}'
+    validate_certs: no
+    uuid: "{{ item.uuid }}"
+    state: absent
+    force: yes
+  delegate_to: localhost
+  with_items:
+    - "{{ vm_facts.virtual_machines | json_query(my_query) }}"
+  vars:
+    my_query: "[?guest_name=='{{ vm_01_hostname }}']"
+
+
+
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...

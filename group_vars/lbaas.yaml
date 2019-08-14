@@ -1,0 +1,12 @@
+provider:
+  server: localhost
+  user: admin
+  password: "{{ vm_admin_pass }}"
+  validate_certs: no
+  server_port: 443
+
+vm_dns: "172.30.104.10"
+vm_ntp: "172.30.104.10"
+
+vm_admin_pass: "admin"
+vm_root_pass: "root"

@@ -1,0 +1,23 @@
+---
+#------------------------------------------------------------------------------
+# Start tasks
+#------------------------------------------------------------------------------
+
+  - name: OUTPUT HTTPS LINK
+    debug:
+      msg: "You should now be able to login to the BIG-IP on https://{{ item }}"
+    loop:
+      - "{{ my_stack.ansible_facts.cloudformation[stack_name].stack_outputs.Bigip1ManagementEipAddress }}"
+      - "{{ my_stack.ansible_facts.cloudformation[stack_name].stack_outputs.Bigip2ManagementEipAddress }}"
+
+  - name: OUTPUT HTTPS LINK
+    debug:
+      msg: "You should now be able to login to the APPLICATION on {{ item }}"
+    loop:
+      - "{{ my_stack.ansible_facts.cloudformation[stack_name].stack_outputs.Bigip1VipEipAddress }}"
+
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...

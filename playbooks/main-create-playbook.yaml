@@ -1,0 +1,45 @@
+---
+#------------------------------------------------------------------------------
+# Playbook to CREATE VMWare demo environment. 
+#
+#   Requires pyvmomi python librarypy
+#------------------------------------------------------------------------------
+
+- name: DEPLOY BIG-IP TO VMWARE
+  hosts: lbaas
+  connection: local
+  gather_facts: no
+
+
+#------------------------------------------------------------------------------
+# Load Variables from files 
+#------------------------------------------------------------------------------
+  
+  # You need to create a file named aws_creds.yaml (update path below) with the 
+  # following variables:
+  #
+  #  ec2_access_key: "--your-key-here--"
+  #  ec2_secret_key: "--your-secret-here--"
+  #
+  vars_files:
+    - ../vars/vars.yaml
+    - ../vars/vmware_creds.yaml
+    - ../vars/vmware_vars.yaml
+
+#------------------------------------------------------------------------------
+# End variables
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+# Start tasks
+#------------------------------------------------------------------------------
+
+  tasks:
+
+  - include_tasks: ../tasks/tasks-01-deploy-vmware-vm.yaml
+
+
+#------------------------------------------------------------------------------
+# End tasks
+#------------------------------------------------------------------------------
+...
