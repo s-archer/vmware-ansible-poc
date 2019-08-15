@@ -25,6 +25,9 @@ You will need to create a credentials file (or files) containing the following v
     vm_admin_pass: "<username>"
     vm_root_pass: "<password>"
 
+Notes:
+
+- variable names should only contain [a-zA-Z0-9_] 
 
 Overwrite local copy of repo:
 
