@@ -74,8 +74,8 @@
       validate_certs: no
       user: "root"
       password: "{{ vm_root_pass }}"
-  delegate_to: localhost
-  debugger: always
+    sleep: 10
+    timeout: 3600
 
 
 #------------------------------------------------------------------------------
