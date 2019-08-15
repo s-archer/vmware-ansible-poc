@@ -1,7 +1,7 @@
 
 source_ova: "../ova/BIGIP-14.1.0.3-0.0.6.ALL-scsi.ova"
 destination_ova: "../ova/BIGIP-14.1.0.3-0.0.6.ALL-scsi.mod.ova"
-vcenter_ova: "../ova/BIGIP-14.1.0.3-0.0.6.ALL-scsi..mod.ova"
+vcenter_ova: "../ova/BIGIP-14.1.0.3-0.0.6.ALL-scsi.mod.ova"
 
 vcenter_hostname: "lon-vcenter.itc.f5net.com"
 vcenter_dc: "LON"
