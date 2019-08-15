@@ -1,4 +1,5 @@
 f5_license: "BBEUL-VEMBL-SUPIC-BUXUN-OKREVWO"
+trust_peer_ip: "172.30.107.121"
 net_mgmt:
   name: "mgmt"
   vlan: "itc_pme"

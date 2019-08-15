@@ -1,4 +1,5 @@
 f5_license: "RRZNZ-BQZBG-LJZKZ-BPQKG-OFDEEZO"
+trust_peer_ip: "172.30.107.120"
 net_mgmt:
   name: "mgmt"
   vlan: "itc_pme"
