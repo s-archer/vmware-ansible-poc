@@ -15,13 +15,10 @@
 # Load Variables from files 
 #------------------------------------------------------------------------------
   
-
   vars_files:
 
     - ../vars/vmware_vars.yaml
    
-
-
 #------------------------------------------------------------------------------
 # End variables
 #------------------------------------------------------------------------------
@@ -32,15 +29,9 @@
   
   tasks:
 
-
-  #- name: POPULATE TEMPLATE FOR COT 
-  #  template: src=templates/deploy_ova.bash.j2 dest=/tmp/deploy_ova.bash
-
   - name: ADD CUSTOM GUEST PROPERTIES TO VMWARE OVA FILE
-    #command: bash cot edit-properties {{ source_ova }} -p net.mgmt.addr=""+string -p net.mgmt.gw=""+string -p user.root.pwd=""+string -p user.admin.pwd=""+string -u -o {{ destination_ova }}
-    command: "{{ lookup('template', './templates/cot-template.bash.j2', split_lines=False) }}"
-    #command: "{{ lookup('template', './templates/cot-template.bash.j2') }}"
-
+    command: "{{ lookup('template', '../declarations/cot-template.bash.j2', split_lines=False) }}"
+    
 #------------------------------------------------------------------------------
 # End tasks
 #------------------------------------------------------------------------------
