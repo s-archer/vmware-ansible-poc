@@ -1,5 +1,4 @@
-f5_license: "DZNPY-WWRQO-XFSBB-EQFAU-BDYNCQK"
-trust_peer_ip: "172.30.107.121"
+f5_license: "PSNAK-EVTAE-GXVHP-ARHBE-XPEBQUQ"
 net_mgmt:
   name: "mgmt"
   vlan: "itc_pme"
