@@ -45,7 +45,7 @@
       password: "{{ provider.password }}"
       body: "{{ lookup('template', '../declarations/as3-declaration.j2', split_lines=False) }}"
       body_format: json
-      status_code: 200 202
+      status_code: 200,202
       timeout: 120
       validate_certs: no
     register: deploy_as3
