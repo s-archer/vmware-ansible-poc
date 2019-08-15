@@ -15,24 +15,12 @@
 # Load Variables from files 
 #------------------------------------------------------------------------------
   
-  # You need to create a file named aws_creds.yaml (update path below) with the 
-  # following variables:
-  #
-  #  ec2_access_key: "--your-key-here--"
-  #  ec2_secret_key: "--your-secret-here--"
-  #
+
   vars_files:
 
-    - ../../creds/vmware_creds.yaml
-    - ./vars/vars.yaml
-    - ./vars/f5cs_gslb_vars.yaml
-    - ./vars/vmware_vars.yaml
+    - ../vars/vmware_vars.yaml
    
-   # Temp for Shareef
-   # - ../vars/vmware_creds.yaml
-   # - ../vars/vars.yaml
-   # - ../vars/f5cs_gslb_vars.yaml
-   # - ../vars/vmware_vars.yaml
+
 
 #------------------------------------------------------------------------------
 # End variables

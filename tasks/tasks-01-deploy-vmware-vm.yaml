@@ -67,7 +67,7 @@
     msg: "Failed to detect SSH port open"
 
 
-- name: CHECK FOR READY STATUS - CHECK EVERY 10 (MAX 600)
+- name: CHECK FOR READY STATUS - CHECK EVERY 10 (MAX 3600)
   bigip_wait:
     provider:
       server: "{{ net_mgmt.ip }}"
@@ -75,7 +75,7 @@
       user: "root"
       password: "{{ vm_root_pass }}"
     sleep: 10
-    timeout: 600
+    timeout: 3600
 
 
 #------------------------------------------------------------------------------

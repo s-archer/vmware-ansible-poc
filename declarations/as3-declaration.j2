@@ -22,7 +22,10 @@
           "virtualAddresses": [
             "{{ vs_ip }}"
           ],
-          "pool": "arcadia_finance_pool"
+          "pool": "arcadia_finance_pool",
+          "iRules": [
+            "respond_rule"
+          ]
         },
         "arcadia_finance_pool": {
           "class": "Pool",
@@ -38,6 +41,11 @@
               ]
             }
           ]
+        },
+        "respond_rule": {
+          "class": "iRule",
+          "remark": "choose private pool based on IP",
+          "iRule": "when HTTP_REQUEST {\nset content \"<HTML><HEAD><TITLE>TEST RESPONDER IRULE</TITLE></HEAD><BODY>TEST RESPONDER IRULE</BODY></HTML>\"\nHTTP::respond 200 content $content\n}"
         }
       }
     }

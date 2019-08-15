@@ -20,7 +20,7 @@
     delegate_to: localhost
 
 
-  - name: WAIT FOR DO API READY
+  - name: WAIT FOR DO API READY (MAX 1200)
     uri:
       url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/declarative-onboarding/info"
       method: GET
@@ -28,8 +28,8 @@
       password: "{{ provider.password }}"
       status_code: 200
       validate_certs: no
-    retries: 30
-    delay: 5
+    retries: 120
+    delay: 10
     register: do_result
     until: ('status' in do_result) and (do_result.status == 200)
     changed_when: false
@@ -56,7 +56,7 @@
       msg: "{{ do_deploy.json.selfLink }}"
 
 
-  - name: DEPLOY DO DECLARATION STATUS (MAX 600)
+  - name: DEPLOY DO DECLARATION STATUS (MAX 1200)
     uri:
       url: "{{ do_deploy.json.selfLink | replace ('localhost',net_mgmt.ip) }}"
       method: GET
@@ -65,7 +65,7 @@
       status_code: 200
       validate_certs: no
       return_content: yes
-    retries: 60
+    retries: 120
     delay: 10
     delegate_to: localhost
     register: result

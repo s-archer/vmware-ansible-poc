@@ -10,3 +10,6 @@ vs_ip: "10.103.12.100"
 vm_dns: "172.30.104.10"
 vm_ntp: "172.30.104.10"
 
+bigip-ha-1: "lon-ansible-as3-01.pme.itc.f5net.com"
+bigip-ha-2: "lon-ansible-as3-02.pme.itc.f5net.com"
+

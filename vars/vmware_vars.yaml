@@ -1,7 +1,7 @@
 
-source_ova: "./ova/BIGIP-15.0.1-0.0.11.ALL-vmware.ova"
-destination_ova: "./ova/BIGIP-15.0.1-0.0.11.ALL-vmware.mod.ova"
-vcenter_ova: "/root/Downloads/BIGIP-15.0.1-0.0.11.ALL-vmware.mod.ova"
+source_ova: "../ova/BIGIP-15.0.1-0.0.11.ALL-vmware.ova"
+destination_ova: "../ova/BIGIP-15.0.1-0.0.11.ALL-vmware.mod.ova"
+vcenter_ova: "../ova/BIGIP-15.0.1-0.0.11.ALL-vmware.mod.ova"
 
 vcenter_hostname: "lon-vcenter.itc.f5net.com"
 vcenter_dc: "LON"
