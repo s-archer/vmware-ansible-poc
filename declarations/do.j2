@@ -12,12 +12,10 @@
           "overwrite": true,
           "regKey": "{{ f5_license }}"
       },
-      "/Common/default": {
+      "default": {
         "class": "ManagementRoute",
         "gw": "{{ net_mgmt.gw }}",
-        "network": "default",
-        "mtu": 1500,
-        "type": "interface"
+        "network": "default"
       },
       "myDns": {
           "class": "DNS",
