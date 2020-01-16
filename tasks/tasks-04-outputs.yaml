@@ -14,7 +14,7 @@
 
   - name: SEND NOTIFICATION TO SLACK
     slack:
-      token: TQJGFGSVD/BR2D7AN06/2Bsc8hKCUlokflbqPDiKAzLP
+      token: "{{ slack_token }}"
       attachments:
         - text: 'You should now be able to login to the demo deployment\n'
           color: '#36a64f'
