@@ -1,4 +1,4 @@
-f5_license: "L7149-44751-03743-19369-9802696"
+f5_license: "<license>"
 net_mgmt:
   name: "mgmt"
   vlan: "itc_pme"
