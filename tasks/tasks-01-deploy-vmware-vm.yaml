@@ -20,6 +20,7 @@
     datastore: '{{ vcenter_datastore }}'
     name: '{{ inventory_hostname }}'
     networks: "{u'Management':u'{{ net_mgmt.vlan }}',u'Internal':u'{{ net_internal.vlan }}',u'External':u'{{ net_external.vlan }}',u'HA':u'{{ net_ha.vlan }}',}"
+    power_on: no
     properties:
       net.mgmt.addr: "{{ net_mgmt.ip }}/24"
       net.mgmt.gw: "{{ net_mgmt.gw }}"
@@ -27,12 +28,41 @@
       user.root.pwd: "{{ vm_root_pass }}"
     validate_certs: no
     ova: '{{ vcenter_ova }}'
-    wait_for_ip_address: true
+    #wait_for_ip_address: true
   delegate_to: localhost
   register: deploy_ova
 
 
-- name:  DEBUG OVF RESULT
+- name: ADD CPU AND MEMORY TO VM
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_user }}'
+    password: '{{ vcenter_pass }}'
+    datacenter: '{{ vcenter_dc }}'
+    cluster: '{{ vcenter_cluster }}'
+    validate_certs: no
+    name: '{{ inventory_hostname }}'
+    hardware:
+      memory_mb: 16384
+      num_cpus: 8
+    state: present
+  delegate_to: localhost
+
+
+- name: ADD CPU AND MEMORY TO VM
+  vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_user }}'
+    password: '{{ vcenter_pass }}'
+    datacenter: '{{ vcenter_dc }}'
+    cluster: '{{ vcenter_cluster }}'
+    validate_certs: no
+    name: '{{ inventory_hostname }}'
+    state: poweredon
+  delegate_to: localhost
+
+
+- name:  OUTPUT OVF RESULT
   debug:
     msg:  "{{ deploy_ova }}"
 
@@ -48,7 +78,7 @@
   register: vm_facts
 
 
-- name: DEBUG GATHER VM FACTS - AFTER
+- name: OUTPUT VM FACTS - AFTER
   debug:
     msg: "{{ item.vm_network }}"
   loop: "{{ vm_facts.virtual_machines | json_query(my_query)}}"

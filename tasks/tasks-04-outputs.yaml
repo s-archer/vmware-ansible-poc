@@ -12,6 +12,24 @@
       msg: "You should now be able to login to the APPLICATION on {{ vs_ip }}"
     
 
+  - name: SEND NOTIFICATION TO SLACK
+    slack:
+      token: TQJGFGSVD/BR2D7AN06/2Bsc8hKCUlokflbqPDiKAzLP
+      attachments:
+        - text: 'You should now be able to login to the demo deployment\n'
+          color: '#36a64f'
+          pretext: VMWare Ansible Automation Notification
+          title: Deployment Complete
+          author_name: "Stephen Archer"
+          author_icon: 'https://www.f5.com/etc.clientlibs/base/clientlibs/base-resources/resources/logos/favicon-32x32.png'
+          fields:
+            - title: App Link
+              value: "http://{{ vs_ip }}"
+              short: false
+            - title: BIG-IP Mgmt Link
+              value: "https://{{ net_mgmt.ip }}"
+              short: false
+    delegate_to: localhost
 #------------------------------------------------------------------------------
 # End tasks
 #------------------------------------------------------------------------------

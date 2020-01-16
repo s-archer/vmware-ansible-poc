@@ -80,12 +80,6 @@
           "allowService": "all",
           "trafficGroup": "traffic-group-local-only"
       },
-      "default": {
-          "class": "Route",
-          "gw": "{{ net_external.gw }}",
-          "network": "default",
-          "mtu": 1500
-      },
       "ha": {
           "class": "VLAN",
           "tag": 1003,
@@ -103,6 +97,33 @@
           "vlan": "internal",
           "allowService": "all",
           "trafficGroup": "traffic-group-local-only"
+      },
+      "configsync": {
+        "class": "ConfigSync",
+        "configsyncIp": "/Common/ha-self/address"
+      },
+      "failoverAddress": {
+          "class": "FailoverUnicast",
+          "address": "/Common/ha-self/address"
+      },
+      "failoverGroup": {
+          "class": "DeviceGroup",
+          "type": "sync-failover",
+          "members": ["{{ bigip1 }}", "{{ bigip2 }}"],
+          "owner": "{{ bigip1 }}",
+          "autoSync": true,
+          "saveOnAutoSync": false,
+          "networkFailover": true,
+          "fullLoadOnSync": false,
+          "asmSync": false
+      },
+      "trust": {
+          "class": "DeviceTrust",
+          "localUsername": "admin",
+          "localPassword": "{{ vm_admin_pass }}",
+          "remoteHost": "{{ bigip1 }}",
+          "remoteUsername": "admin",
+          "remotePassword": "{{ vm_admin_pass }}"
       }
    }
 }

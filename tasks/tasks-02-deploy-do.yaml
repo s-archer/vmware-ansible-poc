@@ -41,7 +41,7 @@
       method: POST
       user: admin
       password: "{{ provider.password }}"
-      body: "{{ lookup('template', '../declarations/do_base.j2', split_lines=False) }}"
+      body: "{{ lookup('template', '../declarations/do_combined.j2', split_lines=False) }}"
       status_code: 202
       timeout: 300
       body_format: json
@@ -51,49 +51,12 @@
     register: do_deploy
 
 
-  - name: DEBUG DO DEPLOY STATUS
+  - name: DEBUG DO BASE DEPLOY STATUS
     debug:
       msg: "{{ do_deploy.json.selfLink }}"
 
 
-  - name: DEPLOY DO DECLARATION STATUS (MAX 1200)
-    uri:
-      url: "{{ do_deploy.json.selfLink | replace ('localhost',net_mgmt.ip) }}"
-      method: GET
-      user: admin
-      password: "{{ provider.password }}"
-      status_code: 200
-      validate_certs: no
-      return_content: yes
-    retries: 120
-    delay: 10
-    delegate_to: localhost
-    register: result
-    until: ('status' in result) and (result.status == 200)
-
-
-  - name: DEPLOY DO HA CLUSTER DECLARATION
-    uri:
-      url: "https://{{ net_mgmt.ip }}:{{ provider.server_port }}/mgmt/shared/declarative-onboarding"
-      method: POST
-      user: admin
-      password: "{{ provider.password }}"
-      body: "{{ lookup('template', '../declarations/do_cluster.j2', split_lines=False) }}"
-      status_code: 202
-      timeout: 300
-      body_format: json
-      validate_certs: no
-      return_content: yes
-    delegate_to: localhost
-    register: do_deploy
-
-
-  - name: DEBUG DO DEPLOY STATUS
-    debug:
-      msg: "{{ do_deploy.json.selfLink }}"
-
-
-  - name: DEPLOY DO DECLARATION STATUS (MAX 1200)
+  - name: DEPLOY DO BASE DECLARATION STATUS (MAX 1200)
     uri:
       url: "{{ do_deploy.json.selfLink | replace ('localhost',net_mgmt.ip) }}"
       method: GET

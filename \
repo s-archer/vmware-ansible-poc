@@ -2,11 +2,11 @@
 #------------------------------------------------------------------------------
 # Playbook to CREATE VMWare demo environment. 
 #
-#   Requires pyvmomi python librarypy
+#   Requires pyvmomi python library
 #------------------------------------------------------------------------------
 
-- name: PREP VMWARE OVA FILE - ONE TIME TASK
-  hosts: localhost
+- name: DEPLOY BIG-IPS TO VMWARE
+  hosts: lbaas
   connection: local
   gather_facts: no
 
@@ -14,11 +14,13 @@
 #------------------------------------------------------------------------------
 # Load Variables from files 
 #------------------------------------------------------------------------------
-  
-  vars_files:
 
-    - ../vars/vmware_vars.yaml
-   
+  vars_files:
+  - ../vars/bigip_creds.yaml
+  - ../vars/vmware_creds.yaml
+  - ../vars/vmware_vars.yaml
+
+  
 #------------------------------------------------------------------------------
 # End variables
 #------------------------------------------------------------------------------
@@ -26,13 +28,14 @@
 #------------------------------------------------------------------------------
 # Start tasks
 #------------------------------------------------------------------------------
-  
+
   tasks:
 
-  - name: ADD CUSTOM GUEST PROPERTIES TO VMWARE OVA FILE
-    command: "{{ lookup('template', '../declarations/cot-template.bash.j2', split_lines=False) }}"
+#  - include_tasks: ../tasks/tasks-01-deploy-vmware-vm.yaml
+  - include_tasks: ../tasks/tasks-02-deploy-do.yaml
+  - include_tasks: ../tasks/tasks-03-deploy-as3.yaml
+  - include_tasks: ../tasks/tasks-04-outputs.yaml
 
-    
 #------------------------------------------------------------------------------
 # End tasks
 #------------------------------------------------------------------------------
